@@ -1,0 +1,8 @@
+Famouzcoder = newfav
+if you want to install the packages
+pip freeze > requirements.txt
+OR
+pip install Flask
+
+python run.py
+// to execute the code (Run the Flask application from the root directory (where run.py is located))

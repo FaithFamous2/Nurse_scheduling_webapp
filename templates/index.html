@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nurse Schedule</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .container {
+        width: 90%;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 40px;
+      }
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+      }
+      .date {
+        text-align: center;
+        color: #7f8c8d;
+        margin-bottom: 20px;
+      }
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+      }
+      .day {
+        background-color: #ecf0f1;
+        border: 1px solid #bdc3c7;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      .day-header {
+        font-weight: bold;
+        text-align: center;
+        background-color: #3498db;
+        color: #ffffff;
+        padding: 10px 0;
+        border-radius: 8px 8px 0 0;
+      }
+      .shift {
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: left;
+      }
+      .shift-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #2980b9;
+      }
+      .shift-details {
+        font-size: 14px;
+        color: #34495e;
+      }
+      .regenerate-button {
+        display: block;
+        width: 200px;
+        margin: 20px auto;
+        padding: 10px;
+        background-color: #e74c3c;
+        color: #ffffff;
+        text-align: center;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+      }
+      .regenerate-button:hover {
+        background-color: #c0392b;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 20px;
+        color: #7f8c8d;
+      }
+      .footer a {
+        color: #3498db;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Nurse Schedule</h1>
+      <div class="date">
+        Schedule for the week starting: <strong id="start-date"></strong>
+      </div>
+      <div id="calendar" class="calendar"></div>
+      <a href="/" class="regenerate-button">Regenerate Schedule</a>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var calendarEl = document.getElementById('calendar');
+          var scheduleData = {{ schedule | safe }};
+          var startDateEl = document.getElementById('start-date');
+
+          function generateCalendarHtml(data) {
+              const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+              let html = '';
+
+              // Generate calendar headers
+              html += daysOfWeek.map(day => `<div class="day-header">${day}</div>`).join('');
+
+              // Generate calendar days
+              for (const day of daysOfWeek) {
+                  const shifts = data[day] || {};
+                  html += `<div class="day">`;
+
+                  for (const [shift, nurses] of Object.entries(shifts)) {
+                      html += `<div class="shift">`;
+                      html += `<div class="shift-title">${shift}</div>`;
+                      html += `<div class="shift-details"><strong>Head Nurses:</strong> ${nurses['Head Nurse'].join(', ')}</div>`;
+                      html += `<div class="shift-details"><strong>Junior Nurses:</strong> ${nurses['Junior Nurse'].join(', ')}</div>`;
+                      html += `</div>`;
+                  }
+
+                  html += `</div>`;
+              }
+
+              return html;
+          }
+
+          function updateStartDate() {
+              var today = new Date();
+              var day = today.getDate();
+              var month = today.toLocaleString('default', { month: 'long' });
+              var year = today.getFullYear();
+              startDateEl.textContent = `${day} ${month}, ${year}`;
+          }
+
+          updateStartDate();
+          calendarEl.innerHTML = generateCalendarHtml(scheduleData);
+      });
+    </script>
+
+    <div class="footer">
+      &copy; <a href="https://famouzcoder.com">famouzcoder</a>
+      <script>
+        document.write(new Date().getFullYear());
+      </script>
+      All Rights Reserved.
+    </div>
+  </body>
+</html>
