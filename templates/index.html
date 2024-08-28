@@ -6,11 +6,12 @@
     <title>Nurse Schedule</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f4f4f4;
+        background-color: #f0f2f5;
       }
+
       .container {
         width: 90%;
         margin: 0 auto;
@@ -20,134 +21,464 @@
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         margin-top: 40px;
       }
+
+      h1,
+      h2,
+      h3 {
+        color: #333;
+        margin-bottom: 20px;
+      }
+
       h1 {
         text-align: center;
+        font-size: 24px;
+      }
+
+      h2 {
+        font-size: 20px;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 5px;
+      }
+
+      h3 {
+        font-size: 18px;
         color: #2c3e50;
       }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      select {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+      }
+
+      select {
+        height: auto; /* Adjust height for multi-select */
+      }
+
+      button {
+        padding: 12px 20px;
+        background-color: #3498db;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #2980b9;
+      }
+
+      form {
+        margin-bottom: 30px;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        color: #7f8c8d;
+      }
+
+      .footer a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
       .date {
         text-align: center;
         color: #7f8c8d;
         margin-bottom: 20px;
       }
+
       .calendar {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         gap: 15px;
         margin-top: 20px;
       }
+
       .day {
         background-color: #ecf0f1;
         border: 1px solid #bdc3c7;
         border-radius: 8px;
-        padding: 15px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         text-align: center;
       }
+
       .day-header {
-        font-weight: bold;
+        font-weight: 700;
         text-align: center;
         background-color: #3498db;
         color: #ffffff;
-        padding: 10px 0;
+        padding: 12px 0;
         border-radius: 8px 8px 0 0;
       }
+
       .shift {
         margin-top: 10px;
-        padding: 10px;
+        padding: 15px;
         border-radius: 4px;
         background-color: #ffffff;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         text-align: left;
       }
+
       .shift-title {
-        font-weight: bold;
-        margin-bottom: 5px;
+        font-weight: 600;
+        margin-bottom: 8px;
         color: #2980b9;
       }
+
       .shift-details {
         font-size: 14px;
-        color: #34495e;
+        color: #333;
       }
+
       .regenerate-button {
         display: block;
         width: 200px;
         margin: 20px auto;
-        padding: 10px;
+        padding: 12px;
         background-color: #e74c3c;
         color: #ffffff;
         text-align: center;
-        border-radius: 8px;
-        font-weight: bold;
+        border-radius: 4px;
+        font-weight: 600;
         cursor: pointer;
         transition: background-color 0.3s ease;
         text-decoration: none;
       }
+
       .regenerate-button:hover {
         background-color: #c0392b;
       }
-      .footer {
-        text-align: center;
-        margin-top: 20px;
-        color: #7f8c8d;
+      /* Style for the container to align selections */
+      .selection-container {
+        display: flex;
+        gap: 30px; /* Increased gap for a more spacious look */
+        margin-bottom: 20px;
+        align-items: flex-start; /* Align items to the start for a neat look */
       }
-      .footer a {
-        color: #3498db;
-        text-decoration: none;
+
+      /* Style for individual selection items */
+      .selection-item {
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Label styling */
+      .selection-item label {
+        margin-bottom: 8px;
+        font-weight: bold;
+        font-size: 16px; /* Slightly larger font for better readability */
+        color: #333; /* Darker color for better contrast */
+      }
+
+      /* Style the select boxes */
+      .selection-item select {
+        width: 500px; /* Width adjusted to match a larger design */
+        padding: 10px 12px; /* Increased padding for a more comfortable feel */
+        border: 1px solid #ddd; /* Subtle border color */
+        border-radius: 8px; /* Softer rounded corners */
+        background-color: #ffffff; /* White background for a clean look */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        transition: all 0.3s ease; /* Smooth transition effect */
+        font-size: 14px; /* Consistent font size */
+        color: #555; /* Slightly muted text color */
+      }
+
+      /* Hover and focus effect for select boxes */
+      .selection-item select:hover,
+      .selection-item select:focus {
+        border-color: #007bff; /* Border color on hover/focus */
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2); /* Enhanced shadow on hover */
+        outline: none; /* Remove default outline */
+      }
+
+      /* Additional styling for a refined look */
+      .selection-item select::placeholder {
+        color: #aaa; /* Placeholder color */
+        font-style: italic; /* Italicize placeholder for distinction */
       }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Nurse Schedule</h1>
+      <!-- Form to accept input from users -->
+      <form id="schedule-form">
+        <h2>Configure Schedule</h2>
+
+        <!-- Container for selections -->
+        <div class="selection-container">
+          <!-- Days Selection -->
+          <div class="selection-item">
+            <label for="days">Select Days:</label>
+            <select id="days" name="days" multiple>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
+          </div>
+
+          <!-- Shifts Selection -->
+          <div class="selection-item">
+            <label for="shifts">Select Shifts:</label>
+            <select id="shifts" name="shifts" multiple>
+              <option value="Morning">Morning</option>
+              <option value="Afternoon">Afternoon</option>
+              <option value="Night">Night</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Head Nurse and Junior Nurse Input -->
+        <label for="head-nurses">Head Nurses (comma separated):</label>
+        <input
+          type="text"
+          id="head-nurses"
+          name="head_nurses"
+          value="HN1,HN2,HN3,HN4,HN5,HN6,HN7,H8,H9,H10,H11,H12"
+          placeholder="e.g., HN1, HN2, HN3"
+          required
+        />
+
+        <label for="junior-nurses">Junior Nurses (comma separated):</label>
+        <input
+          type="text"
+          id="junior-nurses"
+          name="junior_nurses"
+          value="JN1,JN2,JN3,JN4,JN5,JN6,JN7,JN8,JN9,JN10,JN11,J12,J13,J14,J15,J16,J17,J18,J19,J20,J21,J22,J23,J24,J25,J26"
+          placeholder="e.g., JN1, JN2, JN3"
+          required
+        />
+
+        <!-- Harmony Search Attributes -->
+        <h3>Harmony Search Parameters</h3>
+        <label for="min-head-nurses">Min Head Nurses per Shift:</label>
+        <input
+          type="number"
+          id="min-head-nurses"
+          name="min_head_nurses"
+          value="1"
+          required
+        />
+
+        <label for="harmony-memory-size">Harmony Memory Size:</label>
+        <input
+          type="number"
+          id="harmony-memory-size"
+          name="harmony_memory_size"
+          value="10"
+          required
+        />
+
+        <label for="max-iterations">Max Iterations:</label>
+        <input
+          type="number"
+          id="max-iterations"
+          name="max_iterations"
+          value="1000"
+          required
+        />
+
+        <label for="harmony-memory-consideration-rate"
+          >Harmony Memory Consideration Rate:</label
+        >
+        <input
+          type="number"
+          step="0.1"
+          id="harmony-memory-consideration-rate"
+          name="harmony_memory_consideration_rate"
+          value="0.9"
+          required
+        />
+
+        <label for="pitch-adjustment-rate">Pitch Adjustment Rate:</label>
+        <input
+          type="number"
+          step="0.1"
+          id="pitch-adjustment-rate"
+          name="pitch_adjustment_rate"
+          value="0.3"
+          required
+        />
+
+        <button type="submit" id="generate-schedule">Generate Schedule</button>
+      </form>
+
+      <!-- Calendar Display -->
       <div class="date">
         Schedule for the week starting: <strong id="start-date"></strong>
       </div>
       <div id="calendar" class="calendar"></div>
-      <a href="/" class="regenerate-button">Regenerate Schedule</a>
+
+      <button type="submit" id="regenerate-schedule" class="regenerate-button">
+        Regenerate Schedule
+      </button>
     </div>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          var calendarEl = document.getElementById('calendar');
-          var scheduleData = {{ schedule | safe }};
-          var startDateEl = document.getElementById('start-date');
+      const selectedDays = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ];
+      const selectedShifts = ["Morning", "Afternoon", "Night"];
 
-          function generateCalendarHtml(data) {
-              const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-              let html = '';
-
-              // Generate calendar headers
-              html += daysOfWeek.map(day => `<div class="day-header">${day}</div>`).join('');
-
-              // Generate calendar days
-              for (const day of daysOfWeek) {
-                  const shifts = data[day] || {};
-                  html += `<div class="day">`;
-
-                  for (const [shift, nurses] of Object.entries(shifts)) {
-                      html += `<div class="shift">`;
-                      html += `<div class="shift-title">${shift}</div>`;
-                      html += `<div class="shift-details"><strong>Head Nurses:</strong> ${nurses['Head Nurse'].join(', ')}</div>`;
-                      html += `<div class="shift-details"><strong>Junior Nurses:</strong> ${nurses['Junior Nurse'].join(', ')}</div>`;
-                      html += `</div>`;
-                  }
-
-                  html += `</div>`;
-              }
-
-              return html;
+      // Function to set selected options
+      function setSelectedOptions(selectId, values) {
+        const selectElement = document.getElementById(selectId);
+        for (const option of selectElement.options) {
+          if (values.includes(option.value)) {
+            option.selected = true;
           }
+        }
+      }
 
-          function updateStartDate() {
-              var today = new Date();
-              var day = today.getDate();
-              var month = today.toLocaleString('default', { month: 'long' });
-              var year = today.getFullYear();
-              startDateEl.textContent = `${day} ${month}, ${year}`;
+      // Apply the pre-selection
+      setSelectedOptions("days", selectedDays);
+      setSelectedOptions("shifts", selectedShifts);
+
+      // Function to get selected options from a multi-select field
+      function getSelectedOptions(selectId) {
+        const selectElement = document.getElementById(selectId);
+        return Array.from(selectElement.selectedOptions).map(
+          (option) => option.value
+        );
+      }
+
+      // Function to set selected options for a multi-select field
+      function setSelectedOptions(selectId, values) {
+        const selectElement = document.getElementById(selectId);
+        for (const option of selectElement.options) {
+          option.selected = values.includes(option.value);
+        }
+      }
+
+      // JavaScript for displaying the schedule
+      document.addEventListener("DOMContentLoaded", function () {
+        var calendarEl = document.getElementById("calendar");
+        var startDateEl = document.getElementById("start-date");
+
+        function displaySchedule(data) {
+          if (!data || !data.schedule) {
+            console.error("Invalid schedule data received:", data);
+            return;
           }
 
           updateStartDate();
-          calendarEl.innerHTML = generateCalendarHtml(scheduleData);
+          calendarEl.innerHTML = generateCalendarHtml(data.schedule);
+        }
+
+        // Update generateCalendarHtml function to handle undefined data more gracefully
+        function generateCalendarHtml(data) {
+          const daysOfWeek = [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ];
+          let html = "";
+
+          // Generate calendar headers
+          html += daysOfWeek
+            .map((day) => `<div class="day-header">${day}</div>`)
+            .join("");
+
+          // Generate calendar days
+          for (const day of daysOfWeek) {
+            const shifts = data[day] || {}; // Ensure data[day] is not undefined
+            html += `<div class="day">`;
+
+            for (const [shift, nurses] of Object.entries(shifts)) {
+              html += `<div class="shift">`;
+              html += `<div class="shift-title">${shift}</div>`;
+              html += `<div class="shift-details"><strong>Head Nurses:</strong> ${nurses[
+                "Head Nurse"
+              ].join(", ")}</div>`;
+              html += `<div class="shift-details"><strong>Junior Nurses:</strong> ${nurses[
+                "Junior Nurse"
+              ].join(", ")}</div>`;
+              html += `</div>`;
+            }
+
+            html += `</div>`;
+          }
+
+          return html;
+        }
+
+        function updateStartDate() {
+          var today = new Date();
+          var day = today.getDate();
+          var month = today.toLocaleString("default", { month: "long" });
+          var year = today.getFullYear();
+          startDateEl.textContent = `${day} ${month}, ${year}`;
+        }
+
+        // Fetch and display schedule
+        function displaySchedule(data) {
+          updateStartDate();
+          calendarEl.innerHTML = generateCalendarHtml(data.schedule);
+        }
+
+        // JavaScript function to submit form data to the server
+        document
+          .getElementById("schedule-form")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            data.days = Array.from(formData.getAll("days"));
+            data.shifts = Array.from(formData.getAll("shifts"));
+            data.head_nurses = data.head_nurses.split(",").map((n) => n.trim());
+            data.junior_nurses = data.junior_nurses
+              .split(",")
+              .map((n) => n.trim());
+
+            fetch("/generate_schedule", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data),
+            })
+              .then((response) => response.json())
+              .then((scheduleData) => {
+                // Render the calendar with the received schedule data
+                displaySchedule(scheduleData);
+              });
+          });
       });
     </script>
 
